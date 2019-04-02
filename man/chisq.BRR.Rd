@@ -4,7 +4,7 @@
 \name{chisq.BRR}
 \alias{chisq.BRR}
 \alias{chisq.BRR-package}
-\title{To adjust model fit statistics}
+\title{Adjust the model fit statistics}
 \usage{
 chisq.BRR(model, lavaan.fit, data, mwgtname, repwgtnames,
   fayfactor = 0.5, estimator = c("ML"), test = c("satorra.bentler"))
@@ -30,7 +30,7 @@ chisq.BRR(model, lavaan.fit, data, mwgtname, repwgtnames,
 The model fit results as a lavaan object \cite{(Rosseel, 2012)} with the adjusted model fit statistics.
 }
 \description{
-This function is used to adjust model fit statistics for complex surveys with balanced repeated replications \cite{(Oberski, 2014; Satorra & Muthen, 1995)} .
+This function is used to adjust model fit statistics for complex surveys with balanced repeated replications \cite{(Oberski, 2014; Satorra & Muthen, 1995)}. It saves time to only obtain the model fit statistics during the model selection stage.
 }
 \examples{
 \dontshow{
@@ -59,34 +59,6 @@ mwgtname=wgtnames[1]
 repwgtnames=wgtnames[2:(R+1)]
 fayfactor=0.5
 
-############ Example 1
-model1 <- ' # outcome
-             numcg ~ u2*1 + c*workban + b*sp_adltban
-           # mediator
-             sp_adltban ~ u1*1 + a*workban
-           # indirect effect (a*b)
-             ab := a*b
-           # total effect
-             total := c + (a*b)
-          '
-fit <- lavaan::sem(model=model1, data=MedData, estimator='ML', test='standard')
-chisq.BRR(model1,fit,MedData,mwgtname, repwgtnames)
-#
-# lavaan 0.6-3 ended normally after 24 iterations
-#
-# Optimization method                           NLMINB
-# Number of free parameters                          7
-#
-# Number of observations                          3922
-#
-# Estimator                                         ML      Robust
-# Model Fit Test Statistic                       0.000       0.000
-# Degrees of freedom                                 0           0
-# Scaling correction factor                                     NA
-# for the Satorra-Bentler correction#'
-
-############ Example 2
-
 model3 <- ' # outcome
             numcg ~ u0*1 + c*workban + b1*sp_adltban + b2*sp_kidsban
            # mediator
@@ -101,22 +73,12 @@ model3 <- ' # outcome
 
 fit <- lavaan::sem(model=model3, data=MedData, estimator='ML', test='standard')
 chisq.BRR(model3,fit,MedData,mwgtname, repwgtnames)
-
-#       MedSurvey 1.0
 #
-# lavaan 0.6-3 ended normally after 27 iterations
+# MedSurvey 1.1.0 Adjusted Model Fit Statistics using BRR
 #
-# Optimization method                           NLMINB
-# Number of free parameters                         11
+# chisq   df   pvalue    CFI      RMSEA      SRMR         AIC       BIC
 #
-# Number of observations                          3922
-#
-# Estimator                                         ML      Robust
-# Model Fit Test Statistic                     305.248      70.973
-# Degrees of freedom                                 1           1
-# P-value (Chi-square)                           0.000       0.000
-# Scaling correction factor                                  4.301
-# for the Satorra-Bentler correction
+# 305.25   1  0.00000   0.40561  0.27852   0.07416   88699.43   88768.45
 
 }
 

@@ -7,7 +7,7 @@
 \format{A data frame with 3922 rows and 167 variables:
 \describe{
   \item{\code{PRTAGE}}{Age}
-  \item{\code{PESEX}}{Gender}
+  \item{\code{PESEX}}{Gender, 0=Male, 1=Female}
   \item{\code{repwgt0}}{Sample main weights}
   \item{\code{repwgt1}}{BRR replicate weights}
   \item{\code{repwgt2}}{BRR replicate weights}

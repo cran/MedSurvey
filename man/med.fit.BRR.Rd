@@ -2,7 +2,7 @@
 % Please edit documentation in R/MedSurvey.R
 \name{med.fit.BRR}
 \alias{med.fit.BRR}
-\title{To estimate the mediation effects and adjust standard errors for complex surveys with balanced repeated replications}
+\title{Estimate the mediation effects and standard errors adjusting for complex surveys with BRR}
 \usage{
 med.fit.BRR(model = NULL, data = NULL, mwgtname = NULL,
   repwgtnames = NULL, fayfactor = 0.5, estimator = c("ML"),
@@ -38,7 +38,7 @@ The option "snow" is to use clusters for parallel computing. It is used with the
 The model fit results as a lavaan object with the adjusted estimates, standard errors, and model fit statistics. It is a lavaan object \cite{(Rosseel, 2012)}.
 }
 \description{
-This function is used to estimate the mediation effects adjusted for complex surveys with balanced repeated replications \cite{ (Mai, Ha, Soulakova, 2019)}.
+This function is used to estimate the mediation effects adjusted for complex surveys with balanced repeated replications (BRR) \cite{ (Mai, Ha, Soulakova, 2019)}.
 }
 \examples{
 \dontshow{
@@ -80,7 +80,7 @@ model2 <- ' # outcome
               total := c + (a1*b1) + (a2*b2)
            '
 fit.BRR <- med.fit.BRR(model=model2, data=MedData, mwgtname=mwgtname,
-         repwgtnames=repwgtnames, fayfactor=0.5)
+         repwgtnames=repwgtnames, fayfactor=0.5, parallel='parallel', ncore=2)
 lavaan::summary(fit.BRR)
 #
 # lavaan 0.6-3 ended normally after 41 iterations

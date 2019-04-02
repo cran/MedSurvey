@@ -68,7 +68,7 @@ model2 <- ' # outcome
               total := c + (a1*b1) + (a2*b2)
            '
 fit.BRR2 <- med.fit.BRR(model=model2, data=MedData, mwgtname=mwgtname,
-             repwgtnames=repwgtnames, fayfactor)
+             repwgtnames=repwgtnames, fayfactor, parallel='parallel', ncore=4)
 temp <- med.p.adjust(fit=fit.BRR2, med.eff=c('a1b1' , 'a2b2'))
 #
 # Adjustment for multi mediation tests:

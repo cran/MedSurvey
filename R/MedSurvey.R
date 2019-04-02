@@ -9,9 +9,9 @@
 #' @importFrom parallel mclapply
 
 #' @name chisq.BRR
-#' @title To adjust model fit statistics
+#' @title Adjust the model fit statistics
 #' @description
-#' This function is used to adjust model fit statistics for complex surveys with balanced repeated replications \cite{(Oberski, 2014; Satorra & Muthen, 1995)} .
+#' This function is used to adjust model fit statistics for complex surveys with balanced repeated replications \cite{(Oberski, 2014; Satorra & Muthen, 1995)}. It saves time to only obtain the model fit statistics during the model selection stage.
 #' @param model The model being fitted. It is written in lavaan model syntax \cite{(Rosseel, 2012)}.
 #' @param lavaan.fit The model fit results using 'ML' estimator with sample main weights, but without adjusting the fit statistics or standard errors for complex surveys. Note that it is a lavaan object.
 #' @param data The raw data including the variables of interest and the survey weights. It should be a dataset or dataframe.
@@ -54,34 +54,6 @@
 #' repwgtnames=wgtnames[2:(R+1)]
 #' fayfactor=0.5
 #'
-#' ############ Example 1
-#' model1 <- ' # outcome
-#'              numcg ~ u2*1 + c*workban + b*sp_adltban
-#'            # mediator
-#'              sp_adltban ~ u1*1 + a*workban
-#'            # indirect effect (a*b)
-#'              ab := a*b
-#'            # total effect
-#'              total := c + (a*b)
-#'           '
-#' fit <- lavaan::sem(model=model1, data=MedData, estimator='ML', test='standard')
-#' chisq.BRR(model1,fit,MedData,mwgtname, repwgtnames)
-#' #
-#' # lavaan 0.6-3 ended normally after 24 iterations
-#' #
-#' # Optimization method                           NLMINB
-#' # Number of free parameters                          7
-#' #
-#' # Number of observations                          3922
-#' #
-#' # Estimator                                         ML      Robust
-#' # Model Fit Test Statistic                       0.000       0.000
-#' # Degrees of freedom                                 0           0
-#' # Scaling correction factor                                     NA
-#' # for the Satorra-Bentler correction#'
-#'
-#' ############ Example 2
-#'
 #' model3 <- ' # outcome
 #'             numcg ~ u0*1 + c*workban + b1*sp_adltban + b2*sp_kidsban
 #'            # mediator
@@ -96,22 +68,12 @@
 #'
 #' fit <- lavaan::sem(model=model3, data=MedData, estimator='ML', test='standard')
 #' chisq.BRR(model3,fit,MedData,mwgtname, repwgtnames)
-#'
-#' #       MedSurvey 1.0
 #' #
-#' # lavaan 0.6-3 ended normally after 27 iterations
+#' # MedSurvey 1.1.0 Adjusted Model Fit Statistics using BRR
 #' #
-#' # Optimization method                           NLMINB
-#' # Number of free parameters                         11
+#' # chisq   df   pvalue    CFI      RMSEA      SRMR         AIC       BIC
 #' #
-#' # Number of observations                          3922
-#' #
-#' # Estimator                                         ML      Robust
-#' # Model Fit Test Statistic                     305.248      70.973
-#' # Degrees of freedom                                 1           1
-#' # P-value (Chi-square)                           0.000       0.000
-#' # Scaling correction factor                                  4.301
-#' # for the Satorra-Bentler correction
+#' # 305.25   1  0.00000   0.40561  0.27852   0.07416   88699.43   88768.45
 #'
 #' }
 #'
@@ -124,13 +86,14 @@ chisq.BRR <- function(model, lavaan.fit, data, mwgtname, repwgtnames, fayfactor=
   if (missing(lavaan.fit)) stop("a lavaan object of model fit results is needed.")
   if (!is.null(fayfactor)) {if(fayfactor >= 0 & fayfactor <1) {} else stop("fayfactor can only be a value between 0 and 1.") } else fayfactor <- 0.5
   if (!is.null(estimator)) {estimator<-match.arg(estimator)} else {estimator<-'ML'}
-  cat('\tMedSurvey 1.0 \n\n');
+
    #Correct the model fit statistic:
   des.rep <- survey::svrepdesign(ids=~1, weights=data[,mwgtname], data=as.data.frame(data),
                                  repweights=as.data.frame(data)[,repwgtnames], type="Fay", rho=fayfactor)
   wn <- as.integer(sum(data[,mwgtname]))
   n <- nrow(data)
-  #This function is used to calculate the covariance matrix of sample covariances for complex surveys.
+  #This function Gamma.svy() is used to calculate the covariance matrix of sample covariances for complex surveys.
+  #It was modified from an embedded function in Oberski, D. (2014)'s lavaan.survey.
   Gamma.svy <- function (lavaan.fit, survey.design){
     ov.names <- lavaan::lavaanNames(lavaan.fit, type = "ov", group = 1)
     ov.formula <- as.formula(paste("~", paste(ov.names, collapse = "+")))
@@ -169,14 +132,20 @@ chisq.BRR <- function(model, lavaan.fit, data, mwgtname, repwgtnames, fayfactor=
   if (substr(estimator, 1, 2) == "ML") {  tcall$NACOV <- 	gamma.svy$Gamma }
   else if (substr(estimator, 1, 2) == "MLM") {tcall$NACOV <- 	gamma.svy$Gamma }
   main.res.new <- eval(as.call(tcall))
-  # lavaan::summary(main.res.new)
-  main.res.new
+  cat('\tMedSurvey 1.1.0 Adjusted Model Fit Statistics using BRR  \n\n');
+  fitmeasures <- as.vector(lavaan::fitMeasures(main.res.new, c("chisq", "df", "pvalue", "cfi", "rmsea", "srmr", "aic", "bic")))
+  cat('chisq   df   pvalue    CFI      RMSEA      SRMR         AIC       BIC \n\n')
+  cat(sprintf("%8.2f %3.0f  %6.5f   %6.5f  %6.5f   %6.5f %10.2f %10.2f \n",
+              fitmeasures[1], fitmeasures[2], fitmeasures[3],fitmeasures[4], fitmeasures[5],fitmeasures[6]
+              , fitmeasures[7], fitmeasures[8]))
+  #return(main.res.new)
+  invisible(main.res.new)
 }
 
 #' @name med.fit.BRR
-#' @title To estimate the mediation effects and adjust standard errors for complex surveys with balanced repeated replications
+#' @title Estimate the mediation effects and standard errors adjusting for complex surveys with BRR
 #' @description
-#' This function is used to estimate the mediation effects adjusted for complex surveys with balanced repeated replications \cite{ (Mai, Ha, Soulakova, 2019)}.
+#' This function is used to estimate the mediation effects adjusted for complex surveys with balanced repeated replications (BRR) \cite{ (Mai, Ha, Soulakova, 2019)}.
 #' @param model The model being fitted. It is written in lavaan model syntax \cite{(Rosseel, 2012)}.
 #' @param data The raw data including the variables of interest and the survey weights. It should be a dataset or dataframe.
 #' @param mwgtname The variable name indicating the sample main weight in the dataset. See balanced repeated replications method \cite{(Wolter, 2007)} for more information about the main weight.
@@ -236,7 +205,7 @@ chisq.BRR <- function(model, lavaan.fit, data, mwgtname, repwgtnames, fayfactor=
 #'               total := c + (a1*b1) + (a2*b2)
 #'            '
 #' fit.BRR <- med.fit.BRR(model=model2, data=MedData, mwgtname=mwgtname,
-#'          repwgtnames=repwgtnames, fayfactor=0.5)
+#'          repwgtnames=repwgtnames, fayfactor=0.5, parallel='parallel', ncore=2)
 #' lavaan::summary(fit.BRR)
 #' #
 #' # lavaan 0.6-3 ended normally after 41 iterations
@@ -305,7 +274,7 @@ med.fit.BRR<-function(model=NULL, data=NULL, mwgtname=NULL, repwgtnames=NULL, fa
   if (!is.null(estimator)) {estimator<-match.arg(estimator)} else {estimator<-'ML'}
   if (!is.null(test)) {test<-match.arg(test)} else {test<-'satorra.bentler'}
   if (!is.null(parallel)) {parallel <- match.arg(parallel) } else parallel<-'no'
-  if (!is.null(ncore)) {if(ncore >= 1){ncore <- as.integer(ncore)} else {ncore<-1} } else ncore<-Sys.getenv('NUMBER_OF_PROCESSORS')
+  if (!is.null(ncore)) {if(ncore >= 1){ncore <- as.integer(ncore)} else {ncore<-1} } else ncore<-4
 
    #test the model and read the ov names:
   temp.res<-lavaan::sem(model=model, data=data, estimator=estimator, test="standard", ...)
@@ -323,8 +292,52 @@ med.fit.BRR<-function(model=NULL, data=NULL, mwgtname=NULL, repwgtnames=NULL, fa
   wsmpcov <- stats::cov.wt(x=data[,ovnames], wt = data[,mwgtname], cor = FALSE, center = TRUE, method = "unbiased")
   main.res<- lavaan::sem(model=model, sample.cov = wsmpcov$cov, sample.mean = wsmpcov$center, sample.nobs = n, test="standard", ...) # lavaan::summary(main.res)
 
+
   #Correct the model fit statistic:
-  main.res.new <- chisq.BRR(model=model, lavaan.fit=main.res, data=data,  mwgtname=mwgtname, repwgtnames=repwgtnames, fayfactor=fayfactor, estimator=estimator, test=test)
+  lavaan.fit=main.res
+  des.rep <- survey::svrepdesign(ids=~1, weights=data[,mwgtname], data=as.data.frame(data),
+                                 repweights=as.data.frame(data)[,repwgtnames], type="Fay", rho=fayfactor)
+  wn <- as.integer(sum(data[,mwgtname]))
+  n <- nrow(data)
+  #This function is used to calculate the covariance matrix of sample covariances for complex surveys.
+  Gamma.svy <- function (lavaan.fit, survey.design){
+    ov.names <- lavaan::lavaanNames(lavaan.fit, type = "ov", group = 1)
+    ov.formula <- as.formula(paste("~", paste(ov.names, collapse = "+")))
+    Dplus <- lavaan::lav_matrix_duplication_ginv(length(ov.names))
+    get.stats.design <- function(survey.design, sample.nobs) {
+      sample.cov <- as.matrix(survey::svyvar(ov.formula, design = survey.design, na.rm = TRUE))
+      Gamma.cov <- attr(sample.cov, "var")
+      Gamma.cov <- Dplus %*% Gamma.cov %*% t(Dplus)
+      sample.mean <- survey::svymean(ov.formula, design = survey.design, na.rm = TRUE)
+      Gamma.mean <- attr(sample.mean, "var")
+      Gamma <- lavaan::lav_matrix_bdiag(Gamma.mean, Gamma.cov)
+      Gamma<- Gamma * sample.nobs
+      attr(sample.cov, "var") <- NULL
+      tmp <- as.vector(sample.mean)
+      names(tmp) <- names(sample.mean)
+      sample.mean <- tmp
+      stats <- list(Gamma = Gamma, sample.cov = sample.cov,
+                    sample.mean = sample.mean)
+      stats
+    }
+    if (!any(class(survey.design) == "svyimputationList")) {
+      sample.nobs <- lavaan::lavInspect(lavaan.fit, "nobs")
+      stats <- get.stats.design(survey.design, sample.nobs)
+    } else {stop("The survey design type 'svyimputationList' is currently not supported.")}
+
+    stats
+  }
+  gamma.svy <- Gamma.svy(lavaan.fit, survey.design=des.rep)
+  tcall <- lavaan::lavInspect(lavaan.fit, "call")
+  tcall$data <- NULL
+  tcall$sample.cov <- gamma.svy$sample.cov
+  tcall$sample.mean <- gamma.svy$sample.mean
+  tcall$sample.nobs <- n
+  tcall$estimator <- estimator
+  tcall$test <- test
+  if (substr(estimator, 1, 2) == "ML") {  tcall$NACOV <- 	gamma.svy$Gamma }
+  else if (substr(estimator, 1, 2) == "MLM") {tcall$NACOV <- 	gamma.svy$Gamma }
+  main.res.new <- eval(as.call(tcall))
 
   #Calculate the BRR standard errors
   RR <- length(repwgtnames)
@@ -446,7 +459,7 @@ med.fit.BRR<-function(model=NULL, data=NULL, mwgtname=NULL, repwgtnames=NULL, fa
 #'               total := c + (a1*b1) + (a2*b2)
 #'            '
 #' fit.BRR2 <- med.fit.BRR(model=model2, data=MedData, mwgtname=mwgtname,
-#'              repwgtnames=repwgtnames, fayfactor)
+#'              repwgtnames=repwgtnames, fayfactor, parallel='parallel', ncore=4)
 #' temp <- med.p.adjust(fit=fit.BRR2, med.eff=c('a1b1' , 'a2b2'))
 #' #
 #' # Adjustment for multi mediation tests:
@@ -561,10 +574,10 @@ med.p.adjust <- function(fit=NULL, med.eff=NULL, p.adj.method=c('holm', 'hochber
 #'               total := c + (a1*b1) + (a2*b2)
 #'            '
 #' fit.BRR2 <- med.fit.BRR(model=model2, data=MedData, mwgtname=mwgtname,
-#'              repwgtnames=repwgtnames, fayfactor)
+#'              repwgtnames=repwgtnames, fayfactor, parallel='parallel')
 #' temp <- med.summary(fit=fit.BRR2, med.eff=c('a1b1' , 'a2b2'))
 #' #
-#' # MedSurvey 1.0
+#' # MedSurvey 1.1.0
 #' #
 #' # Multimediation with Complex Survey Data:
 #' #
@@ -614,7 +627,7 @@ med.summary <- function(fit=NULL, med.eff=NULL, p.adj.method=c("holm", "hochberg
   se.type <- paste(fit@Options$se," SE.",sep="")
   note2 <- paste("\t Standard errors type is ", se.type, '\n', sep="")
   note <- NULL
-  cat('\tMedSurvey 1.0 \n\n');
+  cat('\tMedSurvey 1.1.0 \n\n');
   cat("\tMultimediation with Complex Survey Data:","\n\n", sep="")
   x <- fit@ParTable
   idx <- match(x$label, med.eff)
@@ -636,7 +649,7 @@ med.summary <- function(fit=NULL, med.eff=NULL, p.adj.method=c("holm", "hochberg
   } else {
     p.adj.method <- NULL
     adj.p <- NULL
-    tabtitle <- sprintf("%15s  %15s  %15s  %15s  %15s \n", "Effect", "Est.", se.type, "p Value")
+    tabtitle <- sprintf("%15s  %15s  %15s  %15s \n", "Effect", "Est.", se.type, "p Value")
     cat(tabtitle)
     i=1
     for (i in 1:length(med.eff)) {
