@@ -1,19 +1,21 @@
 Package: MedSurvey
 Title: Mediation Analysis for Complex Surveys
-Version: 1.1.1.0
+Version: 1.1.1.1.0
 Author: Yujiao Mai [aut], 
         Jiahui Xu [aut], 
         Deo Kumar Srivastava [aut], 
         Hui Zhang [aut,cre]
-Maintainer: Hui Zhang <hui.zhang@stjude.org>
+Maintainer: Hui Zhang <hzhang@northwestern.edu>
 Description: It is a computer tool to conduct mediation analysis for complex surveys using multi-stage sampling. Specifically, the mediation analysis method using balanced repeated replications was proposed by Mai, Ha, and Soulakova (2019) <DOI:10.1080/10705511.2018.1559065>. The development of 'MedSurvey' was sponsored by American Lebanese Syrian Associated Charities (ALSAC). However, the contents of MedSurvey do not necessarily represent the policy of the ALSAC.
 Depends: R (>= 2.50), stats, Matrix, survey, lavaan, parallel
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-URL: https://sjbiostat.shinyapps.io/MedSurvey/
+URL: https://CRAN.R-project.org/package=MedSurvey
+        https://github.com/YujiaoMai/MedSurvey
+        https://sjbiostat.shinyapps.io/MedSurvey/
 RoxygenNote: 6.1.1
 NeedsCompilation: no
-Packaged: 2019-04-24 02:12:54 UTC; ymai
+Packaged: 2019-07-23 15:02:35 UTC; ymai
 Repository: CRAN
-Date/Publication: 2019-04-24 07:20:07 UTC
+Date/Publication: 2019-07-23 22:52:08 UTC
