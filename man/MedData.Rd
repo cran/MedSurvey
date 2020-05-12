@@ -4,7 +4,8 @@
 \name{MedData}
 \alias{MedData}
 \title{CPS-TUS data 2014-2015}
-\format{A data frame with 3922 rows and 167 variables:
+\format{
+A data frame with 3922 rows and 167 variables:
 \describe{
   \item{\code{PRTAGE}}{Age}
   \item{\code{PESEX}}{Gender, 0=Male, 1=Female}
@@ -173,7 +174,8 @@
   \item{\code{sp_kidsban}}{Supporting toward smoking ban in kids-related areas (e.g., children playground)}
   \item{\code{workban}}{Score of smoking restriction score at workplace }
   \item{\code{numcg}}{Number of cigarretes smoked per day}
-}}
+}
+}
 \source{
 \url{http://thedataweb.rm.census.gov/ftp/cps_ftp.html#cpssupps}
 }

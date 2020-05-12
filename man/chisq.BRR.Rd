@@ -3,11 +3,18 @@
 \docType{package}
 \name{chisq.BRR}
 \alias{chisq.BRR}
-\alias{chisq.BRR-package}
 \title{Adjust the model fit statistics}
 \usage{
-chisq.BRR(model, lavaan.fit, data, mwgtname, repwgtnames,
-  fayfactor = 0.5, estimator = c("ML"), test = c("satorra.bentler"))
+chisq.BRR(
+  model,
+  lavaan.fit,
+  data,
+  mwgtname,
+  repwgtnames,
+  fayfactor = 0.5,
+  estimator = c("ML"),
+  test = c("satorra.bentler")
+)
 }
 \arguments{
 \item{model}{The model being fitted. It is written in lavaan model syntax \cite{(Rosseel, 2012)}.}

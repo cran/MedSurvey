@@ -4,8 +4,11 @@
 \alias{med.summary}
 \title{To print the summary results of the mediation analysis}
 \usage{
-med.summary(fit = NULL, med.eff = NULL, p.adj.method = c("holm",
-  "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr"))
+med.summary(
+  fit = NULL,
+  med.eff = NULL,
+  p.adj.method = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr")
+)
 }
 \arguments{
 \item{fit}{The model fit results of a mediation model. Note that it is a lavaan object.}

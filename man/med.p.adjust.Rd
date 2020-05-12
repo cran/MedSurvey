@@ -4,8 +4,11 @@
 \alias{med.p.adjust}
 \title{To adjust the p values for multimediation tests}
 \usage{
-med.p.adjust(fit = NULL, med.eff = NULL, p.adj.method = c("holm",
-  "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr"))
+med.p.adjust(
+  fit = NULL,
+  med.eff = NULL,
+  p.adj.method = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr")
+)
 }
 \arguments{
 \item{fit}{The model fit results of a model with multiple mediators. Note that it is a lavaan object.}

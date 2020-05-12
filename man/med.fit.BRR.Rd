@@ -4,10 +4,19 @@
 \alias{med.fit.BRR}
 \title{Estimate the mediation effects and standard errors adjusting for complex surveys with BRR}
 \usage{
-med.fit.BRR(model = NULL, data = NULL, mwgtname = NULL,
-  repwgtnames = NULL, fayfactor = 0.5, estimator = c("ML"),
-  test = c("satorra.bentler"), parallel = c("no", "parallel", "snow"),
-  ncore = Sys.getenv("NUMBER_OF_PROCESSORS"), cl = NULL, ...)
+med.fit.BRR(
+  model = NULL,
+  data = NULL,
+  mwgtname = NULL,
+  repwgtnames = NULL,
+  fayfactor = 0.5,
+  estimator = c("ML"),
+  test = c("satorra.bentler"),
+  parallel = c("no", "parallel", "snow"),
+  ncore = Sys.getenv("NUMBER_OF_PROCESSORS"),
+  cl = NULL,
+  ...
+)
 }
 \arguments{
 \item{model}{The model being fitted. It is written in lavaan model syntax \cite{(Rosseel, 2012)}.}
