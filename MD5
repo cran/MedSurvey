@@ -1,11 +1,11 @@
-cf679c6af02be9fc28e26a213882ad4f *DESCRIPTION
+aa737f8c818b1af45bfd02ad86968301 *DESCRIPTION
 09a136ac73288c44a855ab86772a60a5 *LICENSE
 cd10e55641ffe58cbe59586694fe844a *NAMESPACE
-9bafb0bcbb0eca4c80b31adfcfd0187c *R/MedSurvey.R
-a94bb3aff6b87dff74a94d915d82c515 *R/data.R
+6440de0d85fb4e85e3d94b9220159755 *R/MedSurvey.R
+87a5885f46cf15c6cc2cc38a6af50a4d *R/data.R
 b2d51a1b72ba1d12f8e29051fe817896 *data/sysdata.rda
-e9dab3fd9eae7f4709eb0aaa7d1be461 *man/MedData.Rd
+0723c329c3b2c9db97e0eededeb53ea4 *man/MedData.Rd
 aceec631cf1541522debd9c031298d8a *man/chisq.BRR.Rd
-5d12f96859717c1651ca954974158b08 *man/med.fit.BRR.Rd
+3750035e04630db04bf30f0c48b4e60d *man/med.fit.BRR.Rd
 ce1a771454b90bb10fdfeb54f6b37d0c *man/med.p.adjust.Rd
 5850a6277aba4b2c590901f5ad00f5f4 *man/med.summary.Rd

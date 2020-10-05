@@ -158,7 +158,7 @@ chisq.BRR <- function(model, lavaan.fit, data, mwgtname, repwgtnames, fayfactor=
 #' The option "snow" is to use clusters for parallel computing. It is used with the number of clusters (\cite{cl}).
 #' @param ncore Number of processors used for parallel computing. By default, ncore = Sys.getenv ('NUMBER_OF_PROCESSORS').
 #' @param cl Number of clusters. It is NULL by default. When it is NULL, the program will detect the number of clusters automatically.
-#' @param ... Extra arguments. For example, ordered=c('z1','z2') is an argument to tell 'z1' and 'z2' are ordinal variables. It is not required.
+#' @param ... Extra arguments to be incorporated with in the future. It is not required.
 #' @return The model fit results as a lavaan object with the adjusted estimates, standard errors, and model fit statistics. It is a lavaan object \cite{(Rosseel, 2012)}.
 #' @references Fay, R. E., & Train, G. F. (1995). Aspects of survey and model-based postcensal estimation of income and poverty characteristics for states and counties. In Proceedings of the Section on Government Statistics, American Statistical Association, Alexandria, VA (pp. 154-159).
 #' @references Judkins, D. R. (1990). Fay’s method for variance estimation.Journal of Official Statistics,6(3), 223-239.

@@ -177,7 +177,7 @@ A data frame with 3922 rows and 167 variables:
 }
 }
 \source{
-\url{http://thedataweb.rm.census.gov/ftp/cps_ftp.html#cpssupps}
+\url{https://cancercontrol.cancer.gov/brp/tcrb/tus-cps/questionnaires-data}
 }
 \usage{
 MedData

@@ -172,6 +172,6 @@
 #'   \item{\code{workban}}{Score of smoking restriction score at workplace }
 #'   \item{\code{numcg}}{Number of cigarretes smoked per day}
 #'}
-#' @source \url{http://thedataweb.rm.census.gov/ftp/cps_ftp.html#cpssupps}
+#' @source \url{https://cancercontrol.cancer.gov/brp/tcrb/tus-cps/questionnaires-data}
 #' @references U.S. Department of Commerce, & U.S. Census Bureau. (2016). National Cancer Institute and Food and Drug Administration co-sponsored Tobacco Use Supplement to the Current Population Survey. 2014-15.
 "MedData"

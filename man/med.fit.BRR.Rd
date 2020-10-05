@@ -41,7 +41,7 @@ The option "snow" is to use clusters for parallel computing. It is used with the
 
 \item{cl}{Number of clusters. It is NULL by default. When it is NULL, the program will detect the number of clusters automatically.}
 
-\item{...}{Extra arguments. For example, ordered=c('z1','z2') is an argument to tell 'z1' and 'z2' are ordinal variables. It is not required.}
+\item{...}{Extra arguments to be incorporated with in the future. It is not required.}
 }
 \value{
 The model fit results as a lavaan object with the adjusted estimates, standard errors, and model fit statistics. It is a lavaan object \cite{(Rosseel, 2012)}.
